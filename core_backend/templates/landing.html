@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="GarudAI — Official Civic Escalation Portal for a Clean and Pollution-Free India">
+  <title>GarudAI | Civic Escalation Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#0D2137; --navy-mid:#1A3650;
+      --saffron:#FF9933; --saffron-lt:#FFB366;
+      --green:#138808; --green-lt:#1DAD0A;
+      --white:#FFFFFF; --off-white:#F4F7FB;
+      --slate:#64748B; --slate-lt:#94A3B8;
+      --border:rgba(13,33,55,0.10);
+      --radius-sm:6px; --radius-md:12px; --radius-lg:20px;
+      --shadow-card:0 4px 24px rgba(13,33,55,0.10);
+      --shadow-hover:0 16px 48px rgba(13,33,55,0.18);
+      --transition:0.38s cubic-bezier(0.4,0,0.2,1);
+      --tricolor:linear-gradient(90deg,var(--saffron) 0%,var(--white) 48%,var(--green) 100%);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;font-size:16px;}
+    body{font-family:'Inter',sans-serif;color:var(--navy);background:var(--white);line-height:1.65;overflow-x:hidden;}
+    img{max-width:100%;height:auto;display:block;}
+    a{text-decoration:none;color:inherit;}
+    ul{list-style:none;}
+
+    /* ── UTILITY ── */
+    .container{width:min(1240px,92%);margin:0 auto;}
+    .section-eyebrow{display:inline-block;font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.85rem;border-radius:50px;margin-bottom:1rem;}
+    .eyebrow-navy{background:rgba(13,33,55,0.08);color:var(--navy);border:1px solid rgba(13,33,55,0.15);}
+    .eyebrow-saffron{background:rgba(255,153,51,0.12);color:#c4700f;border:1px solid rgba(255,153,51,0.25);}
+    .section-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.7rem);line-height:1.15;color:var(--navy);margin-bottom:0.8rem;}
+    .section-desc{font-size:clamp(0.9rem,2vw,1.05rem);color:var(--slate);max-width:580px;line-height:1.7;}
+    .section-header-center{text-align:center;margin-bottom:clamp(2rem,5vw,3.5rem);}
+    .section-header-center .section-desc{margin:0 auto;}
+    .tricolor-bar{width:56px;height:4px;border-radius:4px;background:var(--tricolor);margin:0.8rem auto 0;}
+    .tricolor-line{height:4px;background:var(--tricolor);}
+
+    /* ── GOVBAR ── */
+    .govbar{background:var(--navy);color:rgba(255,255,255,0.65);font-size:0.7rem;font-weight:500;letter-spacing:0.04em;padding:0.4rem 0;}
+    .govbar .container{display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;}
+    .govbar a:hover{color:var(--saffron);}
+    .govbar-right{display:flex;gap:1rem;align-items:center;}
+
+    /* ── TICKER ── */
+    .ticker-wrap{background:var(--off-white);border-top:3px solid var(--saffron);border-bottom:3px solid var(--green);overflow:hidden;padding:0.5rem 0;position:relative;}
+    .ticker-label{position:absolute;left:0;top:0;bottom:0;background:var(--saffron);color:#fff;font-family:'Rajdhani',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;padding:0 0.85rem;display:flex;align-items:center;z-index:3;white-space:nowrap;}
+    .ticker-track{display:flex;width:max-content;animation:ticker-scroll 38s linear infinite;padding-left:90px;}
+    .ticker-item{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.8rem;font-weight:500;color:var(--navy);padding:0 2rem;white-space:nowrap;}
+    .ticker-item strong{color:var(--green);}
+    .ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--saffron);flex-shrink:0;}
+    @keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+    .ticker-wrap:hover .ticker-track{animation-play-state:paused;}
+
+    /* ── HEADER ── */
+    .header{position:sticky;top:0;z-index:900;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:0 2px 16px rgba(13,33,55,0.07);}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;gap:0.75rem;}
+    .logo{display:flex;align-items:center;gap:0.65rem;flex-shrink:0;}
+    .logo-emblem{width:40px;height:40px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .logo-emblem svg{width:22px;height:22px;}
+    .logo-name{font-family:'Rajdhani',sans-serif;font-size:1.45rem;font-weight:700;color:var(--navy);letter-spacing:-0.01em;line-height:1;}
+    .logo-name span{color:var(--saffron);}
+    .logo-tag{font-size:0.6rem;font-weight:600;color:var(--slate);letter-spacing:0.05em;text-transform:uppercase;margin-top:2px;}
+    .nav-links{display:flex;gap:0;align-items:center;}
+    .nav-link{font-weight:500;font-size:0.88rem;color:var(--slate);padding:0.4rem 0.65rem;border-radius:var(--radius-sm);transition:var(--transition);}
+    .nav-link:hover{color:var(--navy);background:var(--off-white);}
+    .nav-auth{display:flex;gap:0.5rem;align-items:center;flex-shrink:0;}
+    .btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1.1rem;font-size:0.88rem;font-weight:600;border-radius:var(--radius-sm);cursor:pointer;border:2px solid transparent;transition:var(--transition);white-space:nowrap;font-family:'Inter',sans-serif;}
+    .btn-ghost{color:var(--navy);border-color:var(--border);background:transparent;}
+    .btn-ghost:hover{background:var(--off-white);border-color:var(--navy);}
+    .btn-primary{background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(13,33,55,0.25);}
+    .btn-primary:hover{background:#0a1b2e;transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,33,55,0.30);}
+    .btn-saffron{background:var(--saffron);color:#fff;box-shadow:0 2px 10px rgba(255,153,51,0.35);}
+    .btn-saffron:hover{background:#e68828;transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,153,51,0.45);}
+    .btn-lg{padding:0.8rem 1.8rem;font-size:0.97rem;}
+    /* Hamburger */
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:0.45rem;border-radius:var(--radius-sm);background:transparent;border:none;}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--navy);border-radius:2px;transition:var(--transition);}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    /* Mobile menu */
+    .mobile-menu{display:none;flex-direction:column;gap:0.2rem;background:#fff;border-top:1px solid var(--border);padding:0.75rem 4%;}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu .nav-link{padding:0.65rem 0.75rem;font-size:0.95rem;}
+
+    /* ── HERO ── */
+    .hero{position:relative;padding:clamp(3rem,8vw,6.5rem) 0 clamp(3rem,7vw,5.5rem);background:var(--navy);overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(255,153,51,0.08) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(19,136,8,0.07) 0%,transparent 45%);pointer-events:none;}
+    .hero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+    .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+    .hero-content{max-width:560px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,153,51,0.15);border:1px solid rgba(255,153,51,0.3);color:var(--saffron-lt);padding:0.35rem 0.9rem;border-radius:50px;font-size:0.75rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.25rem;}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--saffron);animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    .hero-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;color:#fff;margin-bottom:1rem;}
+    .hero-title .accent-saffron{color:var(--saffron);}
+    .hero-title .accent-green{color:var(--green-lt);}
+    .hero-philosophy{font-size:clamp(0.88rem,2vw,1rem);color:rgba(255,255,255,0.7);line-height:1.7;border-left:3px solid var(--saffron);padding-left:1rem;margin:1.25rem 0 1.75rem;font-style:italic;}
+    .hero-actions{display:flex;gap:0.85rem;flex-wrap:wrap;}
+    /* Hero right panel */
+    .hero-visual{display:flex;flex-direction:column;gap:1rem;}
+    .hero-stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .hstat{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-md);padding:1.25rem 1.1rem;backdrop-filter:blur(8px);transition:var(--transition);position:relative;overflow:hidden;}
+    .hstat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--tricolor);opacity:0;transition:var(--transition);}
+    .hstat:hover{border-color:rgba(255,153,51,0.4);transform:translateY(-4px);}
+    .hstat:hover::before{opacity:1;}
+    .hstat-num{font-family:'Rajdhani',sans-serif;font-size:1.85rem;font-weight:700;color:#fff;line-height:1;margin-bottom:0.25rem;}
+    .hstat-label{font-size:0.78rem;color:rgba(255,255,255,0.55);font-weight:500;}
+    .hstat-icon{position:absolute;top:0.85rem;right:0.85rem;width:28px;height:28px;opacity:0.25;}
+    .hero-map{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-md);padding:1.25rem;display:flex;align-items:center;gap:1rem;}
+    .map-ping{width:44px;height:44px;border-radius:50%;background:rgba(255,153,51,0.2);border:2px solid var(--saffron);display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:ping-ring 2.5s ease-in-out infinite;}
+    @keyframes ping-ring{0%,100%{box-shadow:0 0 0 0 rgba(255,153,51,0.4);}50%{box-shadow:0 0 0 12px rgba(255,153,51,0);}}
+    .map-text h4{color:#fff;font-size:0.9rem;font-weight:600;}
+    .map-text p{color:rgba(255,255,255,0.5);font-size:0.78rem;margin-top:0.2rem;}
+
+    /* ── STATS STRIP ── */
+    .stats-strip{background:var(--off-white);border-bottom:1px solid var(--border);}
+    .stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+    .stat-cell{padding:clamp(1.5rem,4vw,2.5rem) clamp(1rem,3vw,2rem);text-align:center;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:var(--transition);cursor:default;}
+    .stat-cell:last-child{border-right:none;}
+    .stat-cell::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,153,51,0.06) 0%,rgba(13,33,55,0.06) 50%,rgba(19,136,8,0.06) 100%);opacity:0;transition:var(--transition);}
+    .stat-cell::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);transition:0.55s ease;}
+    .stat-cell:hover::before{opacity:1;}
+    .stat-cell:hover::after{left:150%;}
+    .stat-cell:hover{transform:translateY(-4px);box-shadow:var(--shadow-card);}
+    .stat-num{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,5vw,2.8rem);font-weight:700;color:var(--navy);line-height:1;margin-bottom:0.35rem;}
+    .stat-label-text{font-size:clamp(0.72rem,1.5vw,0.85rem);font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.04em;}
+    .stat-accent{width:28px;height:3px;border-radius:2px;margin:0.5rem auto 0;}
+
+    /* ── PROCESS ── */
+    .process-section{padding:clamp(3rem,7vw,6rem) 0;background:#fff;}
+    .process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+    .process-card{background:var(--off-white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:clamp(1.75rem,4vw,2.5rem) clamp(1.25rem,3vw,2rem);position:relative;overflow:hidden;transition:var(--transition);cursor:default;}
+    .process-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,33,55,0) 0%,rgba(255,153,51,0.08) 50%,rgba(19,136,8,0.06) 100%);opacity:0;transition:var(--transition);}
+    .process-card::after{content:'';position:absolute;top:0;left:-100%;bottom:0;width:50%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);transition:0.55s ease;}
+    .process-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover);border-color:rgba(255,153,51,0.3);}
+    .process-card:hover::before{opacity:1;}
+    .process-card:hover::after{left:130%;}
+    .process-step{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;line-height:1;color:rgba(13,33,55,0.06);position:absolute;top:1.25rem;right:1.25rem;transition:var(--transition);}
+    .process-card:hover .process-step{color:rgba(255,153,51,0.18);}
+    .process-icon-wrap{width:52px;height:52px;border-radius:var(--radius-md);background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;position:relative;z-index:1;transition:var(--transition);}
+    .process-card:hover .process-icon-wrap{background:var(--saffron);transform:scale(1.08);}
+    .process-icon-wrap svg{width:24px;height:24px;color:#fff;}
+    .process-card h3{font-family:'Rajdhani',sans-serif;font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:0.65rem;position:relative;z-index:1;}
+    .process-card p{font-size:0.9rem;color:var(--slate);line-height:1.7;position:relative;z-index:1;}
+
+    /* ── DEPARTMENTS ── */
+    .dept-section{padding:clamp(3rem,7vw,6rem) 0;background:var(--off-white);}
+    .dept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;}
+    .dept-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-md);padding:1.35rem;display:flex;flex-direction:column;align-items:flex-start;gap:0.85rem;position:relative;overflow:hidden;transition:var(--transition);cursor:default;}
+    .dept-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,33,55,0) 0%,rgba(13,33,55,0.04) 40%,rgba(19,136,8,0.07) 100%);opacity:0;transition:var(--transition);}
+    .dept-card::after{content:'';position:absolute;top:-50%;left:-100%;width:40%;height:200%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);transform:skewX(-20deg);transition:0.6s ease;}
+    .dept-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover);border-color:rgba(19,136,8,0.3);}
+    .dept-card:hover::before{opacity:1;}
+    .dept-card:hover::after{left:120%;}
+    .dept-icon-box{width:44px;height:44px;border-radius:var(--radius-sm);background:rgba(19,136,8,0.09);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition);position:relative;z-index:1;}
+    .dept-card:hover .dept-icon-box{background:var(--green);transform:scale(1.1) rotate(-4deg);}
+    .dept-icon-box svg{width:20px;height:20px;color:var(--green);transition:var(--transition);}
+    .dept-card:hover .dept-icon-box svg{color:#fff;}
+    .dept-info{position:relative;z-index:1;}
+    .dept-info h4{font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.15rem;}
+    .dept-info p{font-size:0.78rem;color:var(--slate);}
+    .dept-arrow{margin-top:auto;font-size:1rem;color:rgba(13,33,55,0.2);transition:var(--transition);align-self:flex-end;position:relative;z-index:1;}
+    .dept-card:hover .dept-arrow{color:var(--green);transform:translate(3px,-3px);}
+
+    /* ── FAQ ── */
+    .faq-section{padding:clamp(3rem,7vw,6rem) 0;background:#fff;}
+    .faq-layout{display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start;}
+    .faq-sidebar{position:sticky;top:90px;}
+    .faq-sidebar p{font-size:0.93rem;color:var(--slate);line-height:1.7;margin-top:1rem;}
+    .faq-list{display:flex;flex-direction:column;gap:0.65rem;}
+    .faq-item{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;transition:var(--transition);}
+    .faq-item:hover{border-color:rgba(255,153,51,0.3);}
+    .faq-item.open{border-color:var(--saffron);box-shadow:0 4px 20px rgba(255,153,51,0.12);}
+    .faq-q{width:100%;background:none;border:none;padding:1.1rem 1.35rem;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:600;color:var(--navy);cursor:pointer;transition:var(--transition);}
+    .faq-q:hover{background:var(--off-white);}
+    .faq-item.open .faq-q{background:rgba(255,153,51,0.04);}
+    .faq-chevron{width:18px;height:18px;flex-shrink:0;color:var(--slate);transition:transform 0.3s ease;}
+    .faq-item.open .faq-chevron{transform:rotate(180deg);color:var(--saffron);}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.35s ease;font-size:0.9rem;color:var(--slate);line-height:1.75;}
+    .faq-item.open .faq-a{max-height:400px;padding:0 1.35rem 1.35rem;}
+
+    /* ── CTA ── */
+    .cta-section{padding:clamp(3rem,7vw,5rem) 0;background:var(--navy);position:relative;overflow:hidden;}
+    .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 10% 50%,rgba(255,153,51,0.12) 0%,transparent 55%),radial-gradient(ellipse at 90% 50%,rgba(19,136,8,0.10) 0%,transparent 55%);pointer-events:none;}
+    .cta-inner{position:relative;z-index:2;text-align:center;}
+    .cta-inner .section-title{color:#fff;}
+    .cta-inner .section-desc{color:rgba(255,255,255,0.65);margin:1rem auto 2rem;}
+    .cta-actions{display:flex;gap:0.85rem;justify-content:center;flex-wrap:wrap;}
+
+    /* ── FOOTER ── */
+    .footer{background:#07131f;color:rgba(255,255,255,0.55);padding:clamp(2.5rem,6vw,5rem) 0 2rem;}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:2.5rem;margin-bottom:3rem;}
+    .footer-brand-name{font-family:'Rajdhani',sans-serif;font-size:1.7rem;font-weight:700;color:#fff;margin-bottom:0.65rem;}
+    .footer-brand-name span{color:var(--saffron);}
+    .footer-desc{font-size:0.88rem;line-height:1.8;margin-bottom:1.35rem;}
+    .footer-social{display:flex;gap:0.5rem;}
+    .soc-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;transition:var(--transition);}
+    .soc-btn:hover{background:var(--saffron);}
+    .soc-btn svg{width:15px;height:15px;fill:currentColor;}
+    .footer-h{font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:1.1rem;}
+    .footer-links li{margin-bottom:0.55rem;}
+    .footer-links a{font-size:0.85rem;transition:var(--transition);}
+    .footer-links a:hover{color:var(--saffron);}
+    .contact-item{display:flex;align-items:flex-start;gap:0.65rem;margin-bottom:0.8rem;font-size:0.85rem;}
+    .contact-item svg{width:15px;height:15px;color:var(--saffron);flex-shrink:0;margin-top:3px;}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:1.75rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;font-size:0.8rem;}
+    .footer-bottom a:hover{color:var(--saffron);}
+
+    /* ════════════════════════════════════════
+       RESPONSIVE — Mobile-first breakpoints
+    ════════════════════════════════════════ */
+
+    /* ─ Tablet landscape & below (≤1100px) ─ */
+    @media(max-width:1100px){
+      .dept-grid{grid-template-columns:repeat(3,1fr);}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+    }
+
+    /* ─ Tablet portrait (≤900px) ─ */
+    @media(max-width:900px){
+      .hero-inner{grid-template-columns:1fr;}
+      .hero-content{max-width:100%;}
+      .hero-visual{display:none;}
+      .stats-inner{grid-template-columns:repeat(2,1fr);}
+      .stat-cell:nth-child(2){border-right:none;}
+      .stat-cell:nth-child(3){border-top:1px solid var(--border);}
+      .stat-cell:nth-child(4){border-top:1px solid var(--border);border-right:none;}
+      .process-grid{grid-template-columns:1fr 1fr;}
+      .dept-grid{grid-template-columns:repeat(2,1fr);}
+      .faq-layout{grid-template-columns:1fr;gap:2rem;}
+      .faq-sidebar{position:static;}
+      /* Nav: hide text links, show hamburger, keep auth buttons */
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .nav-auth .btn{padding:0.42rem 0.8rem;font-size:0.8rem;}
+    }
+
+    /* ─ Mobile large (≤640px) ─ */
+    @media(max-width:640px){
+      .govbar-right{display:none;}
+      .ticker-track{padding-left:75px;}
+      .logo-emblem{width:36px;height:36px;}
+      .logo-emblem svg{width:20px;height:20px;}
+      .logo-name{font-size:1.25rem;}
+      .logo-tag{display:none;}
+      .nav-auth .btn{padding:0.38rem 0.65rem;font-size:0.75rem;}
+      .hero{padding:2.5rem 0 2.5rem;}
+      .hero-badge{font-size:0.68rem;padding:0.3rem 0.75rem;}
+      .hero-philosophy{font-size:0.85rem;margin:1rem 0 1.5rem;}
+      .hero-actions{flex-direction:column;}
+      .hero-actions .btn{width:100%;justify-content:center;}
+      .stats-inner{grid-template-columns:1fr 1fr;}
+      .stat-cell{padding:1.25rem 0.75rem;}
+      .stat-num{font-size:1.9rem;}
+      .stat-label-text{font-size:0.68rem;}
+      .process-grid{grid-template-columns:1fr;}
+      .dept-grid{grid-template-columns:1fr 1fr;}
+      .faq-q{font-size:0.88rem;padding:1rem 1.1rem;}
+      .faq-item.open .faq-a{padding:0 1.1rem 1.1rem;}
+      .cta-actions{flex-direction:column;align-items:center;}
+      .cta-actions .btn{width:100%;max-width:320px;justify-content:center;}
+      .footer-grid{grid-template-columns:1fr;gap:1.75rem;}
+      .footer-bottom{flex-direction:column;text-align:center;}
+      .footer-bottom div:nth-child(2){display:flex;gap:1.2rem;justify-content:center;}
+      .section-header-center{margin-bottom:1.75rem;}
+    }
+
+    /* ─ Mobile small (≤420px) ─ */
+    @media(max-width:420px){
+      .container{width:94%;}
+      .logo-emblem{display:none;}
+      .nav-auth{gap:0.35rem;}
+      .nav-auth .btn{padding:0.35rem 0.55rem;font-size:0.72rem;}
+      /* Login → icon only on very small screens */
+      .btn-ghost .btn-login-text::after{content:'Login';}
+      .dept-grid{grid-template-columns:1fr 1fr;}
+      .dept-card{padding:1rem;}
+      .dept-info h4{font-size:0.9rem;}
+      .process-card{padding:1.5rem 1.25rem;}
+      .hero-title{font-size:1.85rem;}
+      .stats-inner{grid-template-columns:1fr 1fr;}
+    }
+
+    /* ─ Mobile XS (≤340px) ─ */
+    @media(max-width:340px){
+      .dept-grid{grid-template-columns:1fr;}
+      .hero-title{font-size:1.65rem;}
+      .nav-auth .btn-ghost{display:none;}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── GOV BAR ─── -->
+<div class="govbar">
+  <div class="container">
+    <span>Official Portal · Civic Infrastructure · Government of India</span>
+    <div class="govbar-right">
+      <a href="#">Screen Reader</a>
+      <span>|</span>
+      <a href="#">A+ A A-</a>
+      <span>|</span>
+      <span>English / हिंदी</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker-wrap" aria-label="Live updates">
+  <div class="ticker-label">📡 LIVE</div>
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>52,400+</strong>&nbsp;Citizens enrolled</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>10,230+</strong>&nbsp;Complaints resolved this month</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>145</strong>&nbsp;Municipal zones mapped</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>99%</strong>&nbsp;AI routing accuracy</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Vision: Clean locality → Clean state → Clean India</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Powered by advanced secure AI infrastructure</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>52,400+</strong>&nbsp;Citizens enrolled</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>10,230+</strong>&nbsp;Complaints resolved this month</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>145</strong>&nbsp;Municipal zones mapped</div>
+    <div class="ticker-item"><span class="ticker-dot"></span><strong>99%</strong>&nbsp;AI routing accuracy</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Vision: Clean locality → Clean state → Clean India</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Powered by advanced secure AI infrastructure</div>
+  </div>
+</div>
+
+<!-- ─── HEADER ─── -->
+<header class="header" id="top">
+  <div class="container nav">
+    <a class="logo" href="#top" aria-label="GarudAI Home">
+      <div class="logo-emblem">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="14" stroke="#FF9933" stroke-width="2" fill="none"/>
+          <path d="M18 8 L22 26 L18 23 L14 26 Z" fill="#fff"/>
+          <circle cx="18" cy="18" r="3" fill="#FF9933"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-name">Garud<span>AI</span></div>
+        <div class="logo-tag">Civic Escalation Portal</div>
+      </div>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#home"    class="nav-link">Home</a>
+      <a href="#process" class="nav-link">How It Works</a>
+      <a href="#depts"   class="nav-link">Departments</a>
+      <a href="#faq"     class="nav-link">FAQ</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+
+    <div class="nav-auth">
+      <a href="/login/"    class="btn btn-ghost">Login</a>
+      <a href="/register/" class="btn btn-primary">Register →</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <a href="#home"    class="nav-link" data-close>Home</a>
+    <a href="#process" class="nav-link" data-close>How It Works</a>
+    <a href="#depts"   class="nav-link" data-close>Departments</a>
+    <a href="#faq"     class="nav-link" data-close>FAQ</a>
+    <a href="#contact" class="nav-link" data-close>Contact</a>
+  </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Swachh Bharat Next-Gen Initiative
+      </div>
+      <h1 class="hero-title">
+        Empowering Citizens<br>
+        with <span class="accent-saffron">Artificial</span><br>
+        <span class="accent-green">Intelligence</span>
+      </h1>
+      <blockquote class="hero-philosophy">
+        "If your area is clean, the whole state is clean. When our states are clean, India becomes completely clean and pollution-free."
+      </blockquote>
+      <p style="font-size:clamp(0.85rem,2vw,0.97rem);color:rgba(255,255,255,0.6);line-height:1.75;margin-bottom:1.75rem;">
+        GarudAI uses state-of-the-art secure systems and precise location data to instantly route your civic grievances to the correct municipal authority — no delays, no confusion.
+      </p>
+      <div class="hero-actions">
+        <a href="/report/"  class="btn btn-saffron btn-lg">Lodge a Complaint</a>
+        <a href="#process"  class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,0.25);background:transparent;">How It Works</a>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-stat-cards">
+        <div class="hstat">
+          <svg class="hstat-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+          <div class="hstat-num" data-target="52400">0</div>
+          <div class="hstat-label">Citizens Enrolled</div>
+        </div>
+        <div class="hstat">
+          <svg class="hstat-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div class="hstat-num" data-target="10230">0</div>
+          <div class="hstat-label">Resolved</div>
+        </div>
+        <div class="hstat">
+          <svg class="hstat-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
+          <div class="hstat-num" data-target="145">0</div>
+          <div class="hstat-label">Zones Mapped</div>
+        </div>
+        <div class="hstat">
+          <svg class="hstat-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+          <div class="hstat-num" data-target="99">0</div>
+          <div class="hstat-label">% Accuracy</div>
+        </div>
+      </div>
+      <div class="hero-map">
+        <div class="map-ping">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9933" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+        </div>
+        <div class="map-text">
+          <h4>Live Geospatial Routing Active</h4>
+          <p>GPS-based ward detection across 145 municipal zones</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS STRIP ─── -->
+<div class="stats-strip">
+  <div class="stats-inner container">
+    <div class="stat-cell">
+      <div class="stat-num" data-target="52400">0</div>
+      <div class="stat-label-text">Citizens Enrolled</div>
+      <div class="stat-accent" style="background:var(--saffron)"></div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-target="10230">0</div>
+      <div class="stat-label-text">Complaints Resolved</div>
+      <div class="stat-accent" style="background:var(--green)"></div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-target="145">0</div>
+      <div class="stat-label-text">Zones Mapped</div>
+      <div class="stat-accent" style="background:var(--navy)"></div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num" data-target="99">0</div>
+      <div class="stat-label-text">% Routing Accuracy</div>
+      <div class="stat-accent" style="background:var(--saffron)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HOW IT WORKS (Updated from Three-Tier Mechanism) ─── -->
+<section class="process-section" id="process">
+  <div class="container">
+    <div class="section-header-center">
+      <span class="section-eyebrow eyebrow-navy">Standard Operating Procedure</span>
+      <h2 class="section-title">Smart Civic Resolution Process</h2>
+      <div class="tricolor-bar"></div>
+      <p class="section-desc" style="margin-top:1rem;">A transparent, automated pipeline built to close the gap between citizens and municipal authorities without any bureaucratic delays.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-card">
+        <div class="process-step">01</div>
+        <div class="process-icon-wrap">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+        </div>
+        <h3>Smart Location Mapping</h3>
+        <p>Your device's GPS captures precise coordinates, securely cross-referencing them against official municipal ward boundaries to pinpoint your exact local jurisdiction.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-step">02</div>
+        <div class="process-icon-wrap">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+        </div>
+        <h3>Intelligent Categorization</h3>
+        <p>Our dedicated AI engine instantly analyzes your incident description, determining the exact responsible internal department in milliseconds.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-step">03</div>
+        <div class="process-icon-wrap">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <h3>Automated Dispatch</h3>
+        <p>A government-compliant formal grievance is dynamically drafted and electronically dispatched directly to the designated authority — ensuring full transparency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DEPARTMENTS ─── -->
+<section class="dept-section" id="depts">
+  <div class="container">
+    <div class="section-header-center">
+      <span class="section-eyebrow eyebrow-saffron">Integrated Departments</span>
+      <h2 class="section-title">8 Critical Civic Vectors</h2>
+      <div class="tricolor-bar"></div>
+      <p class="section-desc" style="margin-top:1rem;">GarudAI routes grievances across every essential local government department — automatically.</p>
+    </div>
+    <div class="dept-grid">
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+        <div class="dept-info"><h4>Public Works</h4><p>Roads & Infrastructure</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
+        <div class="dept-info"><h4>Sanitation</h4><p>Waste & Cleanliness</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+        <div class="dept-info"><h4>Electricity Board</h4><p>Streetlights & Power</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg></div>
+        <div class="dept-info"><h4>Water Authority</h4><p>Supply & Drainage</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div>
+        <div class="dept-info"><h4>Public Health</h4><p>Disease & Hygiene</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg></div>
+        <div class="dept-info"><h4>Parks & Forestry</h4><p>Green Zones</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg></div>
+        <div class="dept-info"><h4>Town Planning</h4><p>Encroachments</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+        <div class="dept-info"><h4>Law & Order</h4><p>Traffic & Safety</p></div>
+        <span class="dept-arrow">↗</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-sidebar">
+        <span class="section-eyebrow eyebrow-navy">Frequently Asked</span>
+        <h2 class="section-title">Got Questions?</h2>
+        <div style="width:48px;height:4px;border-radius:4px;background:var(--tricolor);margin:0.8rem 0 0;"></div>
+        <p>Everything about the GarudAI pipeline — from GPS detection to AI drafting to final escalation.</p>
+        <a href="#contact" class="btn btn-primary" style="margin-top:1.35rem;display:inline-flex;">Visit Helpdesk →</a>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            How does GarudAI know my exact municipal ward?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">GarudAI securely requests your device's location. The coordinates are then transmitted to our highly accurate geographic mapping systems, which extract your precise municipal ward and pin code — no manual entry required.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            Is my personal identity revealed to the municipality?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">No. The intelligent system constructs the official letter using only the geographic coordinates and the nature of the issue. Your personal data is kept highly secure on our encrypted servers and used strictly for your portal authentication.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            What technology powers the grievance drafting?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">The platform utilizes state-of-the-art, secure artificial intelligence algorithms. This allows the system to read colloquial incident descriptions and instantly format them into government-standard formal administrative letters.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            How is data synchronised across the platform?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">The platform operates on an advanced dual-tier architecture. The secure citizen-facing interface communicates seamlessly with an isolated, high-speed processing unit that handles all the heavy computation and routing logic securely.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">
+            What languages are supported for complaints?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a">English and Hindi are fully supported. Our advanced AI can also process mixed-language (Hinglish) input and seamlessly translate it into formal government-standard English for the official dispatch.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="container cta-inner">
+    <span class="section-eyebrow" style="background:rgba(255,153,51,0.15);color:var(--saffron-lt);border:1px solid rgba(255,153,51,0.3);">Take Action Today</span>
+    <h2 class="section-title">Your Report. Real Action.</h2>
+    <div class="tricolor-bar"></div>
+    <p class="section-desc">File a complaint in under 2 minutes. Our AI routes it to the right authority instantly — no waiting, no confusion.</p>
+    <div class="cta-actions">
+      <a href="/report/"   class="btn btn-saffron btn-lg">Lodge a Complaint Now</a>
+      <a href="/register/" class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,0.25);background:transparent;">Create Free Account</a>
+    </div>
+  </div>
+</section>
+
+<div class="tricolor-line"></div>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Garud<span>AI</span></div>
+        <p class="footer-desc">A technological leap towards a cleaner, strictly managed, and pollution-free India. Bridging citizens and authorities through AI-powered civic infrastructure.</p>
+        <div class="footer-social">
+          <a class="soc-btn" href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+          <a class="soc-btn" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+          <a class="soc-btn" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-h">Initiatives</h4>
+        <ul class="footer-links">
+          <li><a href="#">Swachh Bharat Mission</a></li>
+          <li><a href="#">Smart City Grid</a></li>
+          <li><a href="#">Digital India Drive</a></li>
+          <li><a href="#">E-Governance API</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-h">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Data Protection</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-h">Grievance Officer</h4>
+        <ul class="footer-links">
+          <li class="contact-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span>NIC Hub, CGO Complex, New Delhi 110003</span>
+          </li>
+          <li class="contact-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span>support@garudai.gov.in</span>
+          </li>
+          <li class="contact-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            <span>1800-XXX-XXXX (Toll Free)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 GarudAI Core Infrastructure. All Rights Reserved.</div>
+      <div><a href="#">Sitemap</a>&nbsp;&nbsp;<a href="#">RTI</a>&nbsp;&nbsp;<a href="#">Accessibility</a></div>
+      <div>Engineered for a Better Republic 🇮🇳</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── Hamburger ── */
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('mobile-menu');
+  ham.addEventListener('click', () => {
+    const open = mob.classList.toggle('open');
+    ham.classList.toggle('open', open);
+    ham.setAttribute('aria-expanded', String(open));
+  });
+  mob.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', () => {
+      mob.classList.remove('open');
+      ham.classList.remove('open');
+      ham.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* ── Counter animation ── */
+  function animateCounter(el) {
+    const target = +el.dataset.target;
+    const isPercent = target <= 100 && !!el.closest('.stat-cell');
+    const dur = 1800, t0 = performance.now();
+    const tick = now => {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      const v = Math.floor(e * target);
+      el.textContent = v.toLocaleString('en-IN') + (p >= 1 ? (target > 100 ? '+' : isPercent ? '%' : '') : '');
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !e.target.dataset.animated) {
+        e.target.dataset.animated = '1';
+        animateCounter(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('[data-target]').forEach(el => obs.observe(el));
+
+  /* ── FAQ Accordion ── */
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o => {
+        o.classList.remove('open');
+        o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* ── Smooth scroll ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
+    });
+  });
+</script>
+</body>
+</html>

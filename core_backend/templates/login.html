@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GarudAI - Citizen Login">
+    <title>GarudAI | Citizen Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS VARIABLES (Matched to Landing Page) */
+        :root {
+            --gov-saffron: #FF9933;
+            --gov-white: #FFFFFF;
+            --gov-green: #138808;
+            --gov-navy: #000080;
+            --gov-navy-dark: #00004d;
+            --text-main: #1F2937;
+            --text-light: #4B5563;
+            --bg-light: #F9FAFB;
+            --border-color: #E5E7EB;
+            
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --transition-standard: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--gov-navy);
+            font-weight: 600;
+            transition: var(--transition-standard);
+        }
+
+        a:hover {
+            color: var(--gov-saffron);
+        }
+
+        /* Layout Structure */
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Left Panel - Branding */
+        .left-panel {
+            flex: 1.2;
+            background: linear-gradient(135deg, var(--gov-navy-dark), var(--gov-navy));
+            color: var(--gov-white);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Animated Circles */
+        .left-panel::before, .left-panel::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .left-panel::before {
+            width: 400px; height: 400px;
+            background: var(--gov-saffron);
+            top: -100px; left: -100px;
+        }
+        .left-panel::after {
+            width: 300px; height: 300px;
+            background: var(--gov-green);
+            bottom: -50px; right: -50px;
+        }
+
+        .branding-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            animation: slideRight 0.8s ease-out;
+        }
+
+        /* Old SVG Emblem */
+        .emblem {
+            width: 80px;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%23FFFFFF" stroke-width="6"/><path d="M50 15 L65 80 L35 80 Z" fill="%23FFFFFF"/><circle cx="50" cy="50" r="15" fill="%23138808"/><circle cx="50" cy="50" r="5" fill="%23FF9933"/></svg>') no-repeat center center;
+            background-size: contain;
+            margin-bottom: 2rem;
+        }
+
+        .brand-title {
+            font-family: 'Merriweather', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+        .brand-title span { color: var(--gov-saffron); }
+
+        .brand-description {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        /* Right Panel - Form */
+        .right-panel {
+            flex: 1;
+            background-color: var(--gov-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 450px;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .login-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header h2 {
+            font-size: 2rem;
+            color: var(--gov-navy);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .login-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-main);
+            transition: var(--transition-standard);
+            background-color: var(--bg-light);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gov-navy);
+            box-shadow: 0 0 0 4px rgba(0, 0, 128, 0.1);
+            background-color: var(--gov-white);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .checkbox-group input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: var(--gov-navy);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gov-navy);
+            color: var(--gov-white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: var(--transition-standard);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-submit:hover {
+            background: var(--gov-navy-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        
+        .back-home svg { width: 16px; height: 16px; }
+
+        /* Animations */
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .left-panel { flex: 1; padding: 3rem; }
+            .brand-title { font-size: 3rem; }
+        }
+
+        @media (max-width: 768px) {
+            .login-wrapper { flex-direction: column; }
+            .left-panel {
+                flex: none;
+                padding: 3rem 2rem;
+                text-align: center;
+                align-items: center;
+            }
+            .emblem { margin: 0 auto 1.5rem; }
+            .branding-content { text-align: center; }
+            .right-panel {
+                padding: 3rem 1.5rem;
+                align-items: flex-start;
+            }
+            .login-box { margin-top: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .brand-title { font-size: 2.5rem; }
+            .brand-description { font-size: 1rem; }
+            .login-header h2 { font-size: 1.75rem; }
+            .form-options { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <!-- Left Panel: Branding & Information -->
+        <div class="left-panel">
+            <div class="branding-content">
+                <div class="emblem"></div>
+                <h1 class="brand-title">Garud<span>AI</span></h1>
+                <p class="brand-description">
+                    Empowering citizens through intelligent automation. Securely log in to track your civic escalations, monitor municipal actions, and contribute to a cleaner, pollution-free India.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Panel: Login Form -->
+        <div class="right-panel">
+            <div class="login-box">
+                <a href="/" class="back-home">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back to Portal
+                </a>
+                
+                <div class="login-header">
+                    <h2>Citizen Login</h2>
+                    <p>Enter your credentials to access your dashboard.</p>
+                </div>
+
+                <form action="/api/login" method="POST">
+                    <!-- CSRF Token goes here for Django -->
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address or Phone</label>
+                        <input type="text" id="email" name="email" class="form-control" placeholder="Enter registered email or phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="remember">
+                            <span>Remember my device</span>
+                        </label>
+                        <a href="/forgot-password/">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Secure Login</button>
+                </form>
+
+                <div class="register-link">
+                    Don't have an account? <a href="/register/">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
