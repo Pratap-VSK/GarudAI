@@ -1,35 +1,96 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GarudAI - Civic Vision</title>
-    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GarudAI | Live Civic Reporting</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>🦅 GarudAI</h1>
-        <p>Report local civic issues instantly to the right authority.</p>
 
-        <div class="card">
-            <textarea id="issueDesc" rows="4" placeholder="Describe the problem (e.g. Overflowing garbage, broken road)..."></textarea>
-            <button id="submitBtn">Detect Location & Generate Complaint</button>
-            <p id="statusMsg"></p>
+    <!-- Header -->
+    <header class="top-header">
+        <div class="logo-area">
+            <svg viewBox="0 0 100 100" class="logo-svg">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#000080" stroke-width="6"/>
+                <path d="M50 15 L65 80 L35 80 Z" fill="#000080"/>
+                <circle cx="50" cy="50" r="15" fill="#138808"/>
+                <circle cx="50" cy="50" r="5" fill="#FF9933"/>
+            </svg>
+            <div class="brand">
+                <h1>Garud<span>AI</span></h1>
+                <p>Live Escalation Terminal</p>
+            </div>
+        </div>
+        <a href="/" class="btn-home">Exit Terminal</a>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+        
+        <!-- Left: Leaflet Live Map -->
+        <div class="map-panel">
+            <div id="map"></div>
+            <div class="map-overlay">
+                <span class="pulse-dot"></span> GPS Grid Active & Waiting...
+            </div>
         </div>
 
-        <div id="resultBox" class="result-card hidden">
-            <h3>Assigned Authority</h3>
-            <p><strong>Location:</strong> <span id="locDisplay"></span></p>
-            <p><strong>Department:</strong> <span id="deptDisplay"></span></p>
-            <p><strong>Authority Contact:</strong> <span id="emailDisplay"></span></p>
-            
-            <hr>
-            <h3>Formal Drafted Letter</h3>
-            <pre id="letterDisplay"></pre>
-        </div>
-    </div>
+        <!-- Right: Control Panel & AI Form -->
+        <div class="control-panel">
+            <div class="panel-header">
+                <h2>Report an Issue</h2>
+                <p>Describe the problem. GarudAI will capture your coordinates and instantly draft an official escalation letter.</p>
+            </div>
 
+            <div class="form-container">
+                <textarea id="issueDesc" placeholder="Example: There is heavy filth and uncollected garbage blocking the main street near the local school..." rows="4"></textarea>
+                <button id="submitBtn" class="btn-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Detect Location & Generate Complaint
+                </button>
+                <div id="statusMsg" class="status-message"></div>
+            </div>
+
+            <!-- AI Result Box -->
+            <div id="resultBox" class="result-box hidden">
+                <div class="result-badge">AI Escalation Complete</div>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span>Target Authority</span>
+                        <strong id="deptDisplay">--</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Authority Email</span>
+                        <strong id="emailDisplay">--</strong>
+                    </div>
+                    <div class="info-item full-width">
+                        <span>Geospatial Lock</span>
+                        <strong id="locDisplay">--</strong>
+                    </div>
+                </div>
+
+                <div class="letter-container">
+                    <span>Formal Drafted Letter</span>
+                    <div id="letterDisplay" class="letter-body"></div>
+                </div>
+                
+                <button class="btn-outline" onclick="window.location.reload()">File Another Report</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Leaflet.js JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
