@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarudAI - Civic Vision</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>🦅 GarudAI</h1>
+        <p>Report local civic issues instantly to the right authority.</p>
+
+        <div class="card">
+            <textarea id="issueDesc" rows="4" placeholder="Describe the problem (e.g. Overflowing garbage, broken road)..."></textarea>
+            <button id="submitBtn">Detect Location & Generate Complaint</button>
+            <p id="statusMsg"></p>
+        </div>
+
+        <div id="resultBox" class="result-card hidden">
+            <h3>Assigned Authority</h3>
+            <p><strong>Location:</strong> <span id="locDisplay"></span></p>
+            <p><strong>Department:</strong> <span id="deptDisplay"></span></p>
+            <p><strong>Authority Contact:</strong> <span id="emailDisplay"></span></p>
+            
+            <hr>
+            <h3>Formal Drafted Letter</h3>
+            <pre id="letterDisplay"></pre>
+        </div>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

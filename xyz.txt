@@ -1,0 +1,34 @@
+```
+garud-ai/
+│
+├── core_backend/                # DJANGO (Port 8000)
+│   ├── manage.py
+│   ├── garud_project/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── reports/                 # Django App
+│   │   ├── migrations/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py            # SQLite table for incident reports
+│   │   ├── urls.py              # Routes for frontend views & API
+│   │   └── views.py             # Receives report, calls FastAPI, serves UI
+│   ├── templates/
+│   │   └── index.html           # Main UI: Form, Animated Envelope, Image Frames
+│   └── static/
+│       ├── css/
+│       │   └── style.css        # Responsive layouts, branch SVGs, envelope & frame animations
+│       └── js/
+│           └── main.js          # Geolocation API, DOM manipulation, Fetch calls
+│
+├── ai_service/                  # FASTAPI MICROSERVICE (Port 8001)
+│   ├── requirements.txt         # fastapi, uvicorn, requests, google-genai, pydantic
+│   ├── config.py                # Environment variables (GEMINI_API_KEY)
+│   └── main.py                  # Reverse geocoding (Nominatim) + Gemini LLM pipeline
+│
+├── .gitignore
+├── README.md
+└── requirements.txt             # Root requirements (django, requests, python-dotenv)
