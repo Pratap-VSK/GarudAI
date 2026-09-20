@@ -49,14 +49,14 @@ async def process_incident(data: IncidentInput):
     "department", "authority_email", "pincode", "drafted_letter".
     """
 
-    # 3. Call Groq REST API (Using valid free-tier model)
+    # 3. Call Groq REST API (Using valid Llama3 model)
     groq_url = "https://api.groq.com/openai/v1/chat/completions"
     headers_groq = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {os.environ.get('GROQ_API_KEY')}"
     }
     payload = {
-        "model": "openai/gpt-oss-120b", 
+        "model": "llama3-8b-8192",  # YAHAN MODEL FIX KIYA HAI
         "messages": [
             {"role": "system", "content": "You are GarudAI. Output only valid JSON."},
             {"role": "user", "content": prompt}
