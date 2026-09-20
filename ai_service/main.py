@@ -49,7 +49,7 @@ async def process_incident(data: IncidentInput):
     "department", "authority_email", "pincode", "drafted_letter".
     """
 
-    # 3. Call Groq REST API (with exact free-tier model)
+    # 3. Call Groq REST API (Using valid free-tier model)
     groq_url = "https://api.groq.com/openai/v1/chat/completions"
     headers_groq = {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ async def process_incident(data: IncidentInput):
         response_data = response.json()
         cleaned = response_data['choices'][0]['message']['content'].strip()
         
-        # Strip Markdown formatting (Llama 3 JSON fix)
+        # Strip Markdown formatting (Llama JSON fix)
         if cleaned.startswith("```json"):
             cleaned = cleaned[7:-3].strip()
         elif cleaned.startswith("```"):
@@ -91,8 +91,12 @@ async def process_incident(data: IncidentInput):
             "drafted_letter": "The AI is currently processing heavy load. Please try again."
         }
 
-    # 4. 🔥 YAHI RETURN MISSING THA! 🔥
     return {
         "location": f"{ward}, {city} ({pincode})",
         "result": parsed_ai
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
