@@ -14,8 +14,9 @@ SECRET_KEY = 'django-insecure-puv&apyb$*oyi(p!bum5f6z_)!3cg$)*x1o$=15zbdmskq6u$@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ['elegant-wholeness-production-cb9e.up.railway.app', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://elegant-wholeness-production-cb9e.up.railway.app']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
@@ -118,4 +119,3 @@ MAILERS = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ['[https://elegant-wholeness-production-cb9e.up.railway.app](https://elegant-wholeness-production-cb9e.up.railway.app)']
