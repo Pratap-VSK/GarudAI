@@ -130,7 +130,7 @@ def submit_incident(request):
             user_email = citizen.email
             user_phone = citizen.profile.phone if hasattr(citizen, 'profile') else "N/A"
             
-            fastapi_url = "[https://garudai-production.up.railway.app/process-incident](https://garudai-production.up.railway.app/process-incident)" 
+            fastapi_url = "https://garudai-production.up.railway.app/process-incident"
             res = requests.post(fastapi_url, json=body)
 
             if res.status_code == 200:
