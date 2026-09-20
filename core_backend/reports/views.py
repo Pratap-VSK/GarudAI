@@ -90,6 +90,15 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 @login_required(login_url='/login/')
+def my_reports(request):
+    """Fetches all detailed reports for the logged-in user."""
+    complaints = Incident.objects.filter(user=request.user)
+    context = {
+        'user_complaints': complaints
+    }
+    return render(request, 'my_reports.html', context)
+
+@login_required(login_url='/login/')
 def index(request):
     """Renders the Live Escalation Terminal (Map + Form)."""
     return render(request, 'index.html')
@@ -105,12 +114,16 @@ def submit_incident(request):
             lon = body.get('lon', 0.0)
             desc = body.get('description', '')
             
+            citizen = request.user
+            full_name = citizen.get_full_name() or citizen.username
+            user_email = citizen.email
+            user_phone = citizen.profile.phone if hasattr(citizen, 'profile') else "N/A"
+            
             fastapi_url = "http://127.0.0.1:8001/process-incident"
             res = requests.post(fastapi_url, json=body)
             
             if res.status_code == 200:
                 api_response = res.json()
-                
                 if not isinstance(api_response, dict):
                     api_response = {}
                     
@@ -125,17 +138,21 @@ def submit_incident(request):
                 authority_email = ai_data.get("authority_email", "admin@local.gov")
                 drafted_letter = ai_data.get("drafted_letter", "Error generating letter.")
                 location_str = api_response.get("location", "Unknown Location")
+                drafted_letter = drafted_letter.replace("[Your Name]", full_name)
+                drafted_letter = drafted_letter.replace("[Contact Number]", user_phone)
+                drafted_letter = drafted_letter.replace("[Email Address]", user_email)
+                drafted_letter = drafted_letter.replace("[Your Name/Signature]", full_name)
 
                 Incident.objects.create(
-                    user=request.user,         
+                    user=request.user,
                     description=desc,
                     latitude=lat,
                     longitude=lon,
                     location_city=location_str,
                     department=department,
                     authority_email=authority_email,
-                    drafted_letter=drafted_letter,
-                    status='Pending'            
+                    drafted_letter=drafted_letter,  
+                    status='Pending'
                 )
 
                 return JsonResponse({
@@ -143,10 +160,50 @@ def submit_incident(request):
                     "location": location_str,
                     "department": department,
                     "email": authority_email,
-                    "letter": drafted_letter
+                    "letter": drafted_letter      
                 })
             else:
                 return JsonResponse({"status": "error", "message": "AI Server Error"}, status=503)
 
         except Exception as e:
             return JsonResponse({"status": "error", "message": f"Django Error: {str(e)}"}, status=500)
+
+@csrf_exempt
+@login_required(login_url='/login/')
+def confirm_incident(request):
+    """Jab user 'File Complaint' dabayega, tab exact location ke sath DB mein save hoga."""
+    if request.method == "POST":
+        try:
+            body = json.loads(request.body)
+            lat = body.get('lat', 0.0)
+            lon = body.get('lon', 0.0)
+            
+            # 🔥 Reverse Geocoding: Lat/Lon se exact readable address nikalna (Nominatim API)
+            location_name = body.get('location', '')
+            if not location_name or location_name == "Unknown Location":
+                try:
+                    geo_url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
+                    headers = {'User-Agent': 'GarudAI-CivicPlatform'}
+                    geo_res = requests.get(geo_url, headers=headers).json()
+                    if 'display_name' in geo_res:
+                        # Chhota aur clean address format
+                        address_parts = geo_res['display_name'].split(',')
+                        location_name = f"{address_parts[0].strip()}, {address_parts[1].strip()}" if len(address_parts) > 1 else geo_res['display_name']
+                except:
+                    location_name = f"Lat: {lat:.4f}, Lon: {lon:.4f}"
+
+            # Save final data to Database with exact location
+            Incident.objects.create(
+                user=request.user,
+                description=body.get('description', ''),
+                latitude=lat,
+                longitude=lon,
+                location_city=location_name,  # Exact resolved location name
+                department=body.get('department', ''),
+                authority_email=body.get('email', ''),
+                drafted_letter=body.get('letter', ''),
+                status='Pending'
+            )
+            return JsonResponse({"status": "success", "saved_location": location_name})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)

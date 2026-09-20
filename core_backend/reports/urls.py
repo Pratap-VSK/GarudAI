@@ -9,4 +9,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('report/', views.index, name='report'),  
     path('api/submit/', views.submit_incident, name='api_submit'),
+    path('my-reports/', views.my_reports, name='my_reports'),
+    path('api/submit/', views.submit_incident, name='api_submit'),
+    path('api/submit/', views.submit_incident, name='api_submit'),
+    path('api/confirm/', views.confirm_incident, name='api_confirm'),
 ]
