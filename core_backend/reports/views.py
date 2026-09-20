@@ -9,6 +9,9 @@ import requests
 import json
 from .models import Incident, CitizenProfile
 
+# ==========================================
+# 1. PUBLIC & AUTHENTICATION VIEWS
+# ==========================================
 def landing(request):
     """Renders the main landing page."""
     if request.user.is_authenticated:
@@ -37,6 +40,7 @@ def register_view(request):
         if User.objects.filter(username=email).exists():
             messages.error(request, "An account with this email already exists.")
             return redirect('register')
+            
         user = User.objects.create_user(username=email, email=email, password=password, first_name=fullname)
         
         CitizenProfile.objects.create(
@@ -76,16 +80,19 @@ def logout_view(request):
     logout(request)
     return redirect('landing')
 
+
+# ==========================================
+# 2. PROTECTED CITIZEN VIEWS
+# ==========================================
 @login_required(login_url='/login/')
 def dashboard(request):
     """Fetches user-specific database records for the dashboard."""
     complaints = Incident.objects.filter(user=request.user)
-    
     context = {
         'total_requests': complaints.count(),
         'pending_requests': complaints.filter(status='Pending').count(),
         'resolved_requests': complaints.filter(status='Resolved').count(),
-        'user_complaints': complaints  # Order is handled by Meta class in models.py
+        'user_complaints': complaints  
     }
     return render(request, 'dashboard.html', context)
 
@@ -103,10 +110,14 @@ def index(request):
     """Renders the Live Escalation Terminal (Map + Form)."""
     return render(request, 'index.html')
 
+
+# ==========================================
+# 3. API ENDPOINTS (TWO-STEP PROCESS)
+# ==========================================
 @csrf_exempt
 @login_required(login_url='/login/')
 def submit_incident(request):
-    """Sends GPS/Description to FastAPI, and saves the AI response to the Database."""
+    """STEP 1: Sends data to FastAPI, personalizes letter, NO DB SAVE."""
     if request.method == "POST":
         try:
             body = json.loads(request.body)
@@ -138,22 +149,11 @@ def submit_incident(request):
                 authority_email = ai_data.get("authority_email", "admin@local.gov")
                 drafted_letter = ai_data.get("drafted_letter", "Error generating letter.")
                 location_str = api_response.get("location", "Unknown Location")
+                
                 drafted_letter = drafted_letter.replace("[Your Name]", full_name)
                 drafted_letter = drafted_letter.replace("[Contact Number]", user_phone)
                 drafted_letter = drafted_letter.replace("[Email Address]", user_email)
                 drafted_letter = drafted_letter.replace("[Your Name/Signature]", full_name)
-
-                Incident.objects.create(
-                    user=request.user,
-                    description=desc,
-                    latitude=lat,
-                    longitude=lon,
-                    location_city=location_str,
-                    department=department,
-                    authority_email=authority_email,
-                    drafted_letter=drafted_letter,  
-                    status='Pending'
-                )
 
                 return JsonResponse({
                     "status": "success", 
@@ -171,14 +171,13 @@ def submit_incident(request):
 @csrf_exempt
 @login_required(login_url='/login/')
 def confirm_incident(request):
-    """Jab user 'File Complaint' dabayega, tab exact location ke sath DB mein save hoga."""
+    """STEP 2: Called when user clicks 'File Complaint'. Saves exact location and data to DB."""
     if request.method == "POST":
         try:
             body = json.loads(request.body)
             lat = body.get('lat', 0.0)
             lon = body.get('lon', 0.0)
             
-            # 🔥 Reverse Geocoding: Lat/Lon se exact readable address nikalna (Nominatim API)
             location_name = body.get('location', '')
             if not location_name or location_name == "Unknown Location":
                 try:
@@ -186,19 +185,17 @@ def confirm_incident(request):
                     headers = {'User-Agent': 'GarudAI-CivicPlatform'}
                     geo_res = requests.get(geo_url, headers=headers).json()
                     if 'display_name' in geo_res:
-                        # Chhota aur clean address format
                         address_parts = geo_res['display_name'].split(',')
                         location_name = f"{address_parts[0].strip()}, {address_parts[1].strip()}" if len(address_parts) > 1 else geo_res['display_name']
                 except:
                     location_name = f"Lat: {lat:.4f}, Lon: {lon:.4f}"
 
-            # Save final data to Database with exact location
             Incident.objects.create(
                 user=request.user,
                 description=body.get('description', ''),
                 latitude=lat,
                 longitude=lon,
-                location_city=location_name,  # Exact resolved location name
+                location_city=location_name,
                 department=body.get('department', ''),
                 authority_email=body.get('email', ''),
                 drafted_letter=body.get('letter', ''),
