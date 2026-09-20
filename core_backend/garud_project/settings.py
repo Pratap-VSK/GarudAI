@@ -117,3 +117,5 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+CSRF_TRUSTED_ORIGINS = ['[https://elegant-wholeness-production-cb9e.up.railway.app](https://elegant-wholeness-production-cb9e.up.railway.app)']
