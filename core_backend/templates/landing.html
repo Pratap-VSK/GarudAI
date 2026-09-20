@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -359,9 +360,14 @@
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
 
+    <!-- Nav Buttons: Dynamic logic using Django Tags -->
     <div class="nav-auth">
-      <a href="/login/"    class="btn btn-ghost">Login</a>
-      <a href="/register/" class="btn btn-primary">Register →</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard →</a>
+      {% else %}
+        <a href="{% url 'login' %}"    class="btn btn-ghost">Login</a>
+        <a href="{% url 'register' %}" class="btn btn-primary">Register →</a>
+      {% endif %}
     </div>
 
     <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
@@ -375,6 +381,16 @@
     <a href="#depts"   class="nav-link" data-close>Departments</a>
     <a href="#faq"     class="nav-link" data-close>FAQ</a>
     <a href="#contact" class="nav-link" data-close>Contact</a>
+    
+    <!-- Added Mobile Login/Register Links -->
+    <div style="border-top: 1px solid var(--border); margin-top: 0.5rem; padding-top: 0.5rem;">
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="nav-link" style="color: var(--saffron); font-weight: 600;">Go to Dashboard</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="nav-link" style="font-weight: 600;">Login</a>
+        <a href="{% url 'register' %}" class="nav-link" style="color: var(--saffron); font-weight: 600;">Register Now</a>
+      {% endif %}
+    </div>
   </div>
 </header>
 
@@ -398,7 +414,7 @@
         GarudAI uses state-of-the-art secure systems and precise location data to instantly route your civic grievances to the correct municipal authority — no delays, no confusion.
       </p>
       <div class="hero-actions">
-        <a href="/report/"  class="btn btn-saffron btn-lg">Lodge a Complaint</a>
+        <a href="{% url 'report' %}"  class="btn btn-saffron btn-lg">Lodge a Complaint</a>
         <a href="#process"  class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,0.25);background:transparent;">How It Works</a>
       </div>
     </div>
@@ -617,8 +633,8 @@
     <div class="tricolor-bar"></div>
     <p class="section-desc">File a complaint in under 2 minutes. Our AI routes it to the right authority instantly — no waiting, no confusion.</p>
     <div class="cta-actions">
-      <a href="/report/"   class="btn btn-saffron btn-lg">Lodge a Complaint Now</a>
-      <a href="/register/" class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,0.25);background:transparent;">Create Free Account</a>
+      <a href="{% url 'report' %}"   class="btn btn-saffron btn-lg">Lodge a Complaint Now</a>
+      <a href="{% url 'register' %}" class="btn btn-lg" style="color:#fff;border:2px solid rgba(255,255,255,0.25);background:transparent;">Create Free Account</a>
     </div>
   </div>
 </section>

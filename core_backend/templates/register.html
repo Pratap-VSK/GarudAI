@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,38 +29,25 @@
             --transition-standard: all 0.3s ease;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         /* ─── DESKTOP: STRICT NO-SCROLLING ─── */
         html, body {
             width: 100%;
             height: 100vh;
-            overflow: hidden; /* Desktop pe scroll block karega */
+            overflow: hidden;
             font-family: 'Inter', sans-serif;
             color: var(--text-main);
             background-color: var(--bg-light);
         }
 
-        a {
-            text-decoration: none;
-            color: var(--gov-navy);
-            font-weight: 600;
-            transition: var(--transition-standard);
-        }
+        a { text-decoration: none; color: var(--gov-navy); font-weight: 600; transition: var(--transition-standard); }
         a:hover { color: var(--gov-saffron); }
 
         /* ==========================================================================
            LAYOUT STRUCTURE
            ========================================================================== */
-        .register-wrapper {
-            display: flex;
-            width: 100%;
-            height: 100vh;
-        }
+        .register-wrapper { display: flex; width: 100%; height: 100vh; }
 
         /* ─── LEFT PANEL (BRANDING & BG) ─── */
         .left-panel {
@@ -67,14 +55,10 @@
             background: linear-gradient(135deg, var(--gov-navy-dark), var(--gov-navy));
             color: var(--gov-white);
             padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
         }
 
-        /* Background Animated Circles */
         .left-panel::before, .left-panel::after {
             content: ''; position: absolute; border-radius: 50%;
             filter: blur(60px); opacity: 0.2; z-index: 0;
@@ -96,80 +80,52 @@
         .right-panel {
             flex: 1.2;
             background-color: var(--gov-white);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 3rem;
-            height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 2rem 3rem; height: 100vh;
         }
 
         .register-box {
-            width: 100%;
-            max-width: 550px;
-            animation: fadeUp 0.6s ease-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            width: 100%; max-width: 550px; animation: fadeUp 0.6s ease-out;
+            display: flex; flex-direction: column; justify-content: center;
         }
 
-        .back-home {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.5rem;
-        }
+        .back-home { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: var(--text-light); margin-bottom: 1.5rem; }
         .back-home svg { width: 16px; height: 16px; }
 
         .register-header { margin-bottom: 1.5rem; }
         .register-header h2 { font-size: 1.8rem; color: var(--gov-navy); margin-bottom: 0.4rem; font-weight: 800; }
         .register-header p { color: var(--text-light); font-size: 0.95rem; line-height: 1.4; }
 
+        /* Django Alert Messages Styling */
+        .django-messages { margin-bottom: 1rem; }
+        .alert { padding: 0.75rem 1rem; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .alert.error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+        .alert.success { background-color: #dcfce3; color: #166534; border: 1px solid #4ade80; }
+
         /* ─── FORM GRID (DESKTOP) ─── */
         form { width: 100%; }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .col-6 { grid-column: span 6; }
-        .col-3 { grid-column: span 3; }
-        .col-2 { grid-column: span 2; }
-        .col-4 { grid-column: span 4; }
+        .form-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+        .col-6 { grid-column: span 6; } .col-3 { grid-column: span 3; } .col-2 { grid-column: span 2; } .col-4 { grid-column: span 4; }
 
         .input-wrap { display: flex; flex-direction: column; gap: 0.3rem; }
         .input-wrap label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
-        
         .form-control {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            font-size: 0.95rem;
-            color: var(--text-main);
-            background-color: var(--bg-light);
-            transition: var(--transition-standard);
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);
+            font-size: 0.95rem; color: var(--text-main); background-color: var(--bg-light); transition: var(--transition-standard);
         }
         .form-control:focus { outline: none; border-color: var(--gov-navy); background-color: var(--gov-white); box-shadow: 0 0 0 3px rgba(0,0,128,0.08); }
 
         /* Terms & Button */
         .checkbox-group {
-            display: flex; align-items: flex-start; gap: 0.6rem;
-            cursor: pointer; font-size: 0.85rem; color: var(--text-light); line-height: 1.5;
-            margin-bottom: 1.5rem;
+            display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 0.85rem;
+            color: var(--text-light); line-height: 1.5; margin-bottom: 1.5rem;
         }
         .checkbox-group input { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--gov-navy); }
 
         .btn-submit {
-            width: 100%;
-            padding: 1rem;
-            background: var(--gov-navy);
-            color: var(--gov-white);
-            border: none; border-radius: var(--radius-md);
-            font-size: 1rem;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-            cursor: pointer; transition: var(--transition-standard); box-shadow: var(--shadow-md);
+            width: 100%; padding: 1rem; background: var(--gov-navy); color: var(--gov-white);
+            border: none; border-radius: var(--radius-md); font-size: 1rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: var(--transition-standard); box-shadow: var(--shadow-md);
         }
         .btn-submit:hover { background: var(--gov-navy-dark); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 
@@ -183,64 +139,21 @@
            MOBILE VIEW (ALLOW SCROLLING & RETAIN FULL UI)
            ========================================================================== */
         @media (max-width: 850px) {
-            
-            /* Enable scrolling on Mobile */
-            html, body {
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto; /* Scroll ON for mobile */
-                overflow-x: hidden;
-            }
-
-            .register-wrapper {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-
-            /* Left panel retains BG but adjusts padding for top section */
-            .left-panel {
-                flex: none;
-                padding: 3rem 2rem 5rem; /* Extra bottom padding for overlap effect */
-                text-align: center;
-                align-items: center;
-            }
-            .branding-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
+            html, body { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
+            .register-wrapper { flex-direction: column; height: auto; min-height: 100vh; }
+            .left-panel { flex: none; padding: 3rem 2rem 5rem; text-align: center; align-items: center; }
+            .branding-content { display: flex; flex-direction: column; align-items: center; }
             .emblem { margin-bottom: 1rem; }
             .brand-title { font-size: 2.5rem; margin-bottom: 0.5rem; }
             .brand-description { font-size: 0.95rem; }
-
-            /* Right panel acts as an overlapping white card */
             .right-panel {
-                flex: none;
-                height: auto;
-                padding: 2.5rem 1.5rem;
-                border-radius: 30px 30px 0 0; /* Rounded top corners */
-                margin-top: -40px; /* Pull up to overlap the left-panel BG */
-                position: relative;
-                z-index: 10;
-                box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+                flex: none; height: auto; padding: 2.5rem 1.5rem; border-radius: 30px 30px 0 0;
+                margin-top: -40px; position: relative; z-index: 10; box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
             }
-
-            .register-box {
-                max-width: 100%;
-            }
-
-            /* Convert Grid to Column stack for better mobile breathing room */
-            .form-grid {
-                display: flex;
-                flex-direction: column;
-                gap: 1.25rem;
-            }
-            
-            /* Make inputs comfortable for touch */
+            .register-box { max-width: 100%; }
+            .form-grid { display: flex; flex-direction: column; gap: 1.25rem; }
             .form-control { padding: 0.85rem 1rem; font-size: 1rem; }
             .input-wrap label { font-size: 0.9rem; }
-            
             .back-home { margin-bottom: 1rem; }
             .register-header h2 { font-size: 1.6rem; }
         }
@@ -274,18 +187,29 @@
                     <p>Provide your official details to create a secure GarudAI profile.</p>
                 </div>
 
-                <form action="/api/register" method="POST">
+                <!-- Django Messages for Error/Success Display -->
+                {% if messages %}
+                <div class="django-messages">
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Form Action set to empty string to POST to the same Django view -->
+                <form action="" method="POST">
+                    <!-- Mandatory Django CSRF Token -->
+                    {% csrf_token %}
                     
-                    <!-- Advanced CSS Grid (Stacks to flex column on Mobile) -->
                     <div class="form-grid">
                         
-                        <!-- Row 1 -->
                         <div class="input-wrap col-6">
                             <label for="fullname">Full Name (As per ID)</label>
                             <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Ramesh Kumar" required>
                         </div>
 
-                        <!-- Row 2 -->
                         <div class="input-wrap col-3">
                             <label for="email">Email Address</label>
                             <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required>
@@ -295,7 +219,6 @@
                             <input type="tel" id="phone" name="phone" class="form-control" placeholder="+91 XXXXXX" required>
                         </div>
 
-                        <!-- Row 3 -->
                         <div class="input-wrap col-2">
                             <label for="age">Age</label>
                             <input type="number" id="age" name="age" class="form-control" placeholder="18+" min="18" required>
@@ -305,13 +228,11 @@
                             <input type="text" id="pincode" name="pincode" class="form-control" placeholder="110001" required>
                         </div>
 
-                        <!-- Row 4 -->
                         <div class="input-wrap col-6">
                             <label for="location">City / District</label>
                             <input type="text" id="location" name="location" class="form-control" placeholder="Enter your city" required>
                         </div>
 
-                        <!-- Row 5 -->
                         <div class="input-wrap col-3">
                             <label for="password">Create Password</label>
                             <input type="password" id="password" name="password" class="form-control" placeholder="Min 8 chars" required>

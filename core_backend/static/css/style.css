@@ -75,4 +75,6 @@ textarea:focus { outline: none; border-color: var(--gov-navy); background: #fff;
     .workspace { flex-direction: column; height: auto; }
     .map-panel { height: 350px; flex: none; border-right: none; border-bottom: 3px solid var(--gov-saffron); }
     .control-panel { flex: none; padding: 2rem 1.5rem; }
+.action-buttons {display: flex; gap: 1rem; margin-top: 1rem; width: 100%; }
+.action-buttons button { flex: 1; justify-content: center; padding: 0.85rem;}
 }

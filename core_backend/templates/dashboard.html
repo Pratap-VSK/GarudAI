@@ -1,0 +1,456 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GarudAI | Citizen Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           THEME VARIABLES (Green & Orange Focus)
+           ========================================================================== */
+        :root {
+            --saffron: #FF9933;
+            --saffron-light: #fff4e6;
+            --green: #138808;
+            --green-light: #e8f5e9;
+            --navy: #0D2137;
+            --bg-body: #F4F7FB;
+            --bg-card: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --transition: all 0.3s ease;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ==========================================================================
+           SIDEBAR
+           ========================================================================== */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .brand {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .brand-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--saffron), var(--green));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: bold; font-family: 'Rajdhani', sans-serif; font-size: 1.2rem;
+        }
+        .brand-text h2 { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; color: var(--navy); }
+        .brand-text span { color: var(--saffron); }
+
+        .nav-menu { padding: 1.5rem 1rem; flex: 1; }
+        .nav-item {
+            padding: 0.85rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .nav-item svg { width: 20px; height: 20px; }
+        .nav-item:hover { background: var(--saffron-light); color: var(--saffron); }
+        
+        .nav-item.active {
+            background: linear-gradient(90deg, var(--green-light), transparent);
+            color: var(--green);
+            border-left: 4px solid var(--green);
+            font-weight: 600;
+        }
+
+        .user-profile {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--saffron-light);
+        }
+        .avatar {
+            width: 45px; height: 45px;
+            background: var(--saffron);
+            color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.2rem;
+        }
+        .user-info h4 { font-size: 0.95rem; color: var(--navy); }
+        .user-info p { font-size: 0.75rem; color: var(--saffron); font-weight: 600; }
+        
+        .logout-btn { margin-left: auto; color: var(--text-muted); cursor: pointer; }
+        .logout-btn:hover { color: #dc2626; }
+
+        /* ==========================================================================
+           MAIN CONTENT AREA
+           ========================================================================== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            justify-content: space-between;
+            position: sticky; top: 0; z-index: 900;
+        }
+        .hamburger { background: none; border: none; font-size: 1.5rem; color: var(--navy); cursor: pointer; }
+
+        .dashboard-container {
+            padding: 2rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Welcome Section */
+        .page-header { margin-bottom: 2rem; }
+        .page-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; color: var(--navy); }
+        .page-header p { color: var(--text-muted); font-size: 1rem; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        
+        .stat-icon {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .stat-icon svg { width: 28px; height: 28px; }
+        
+        /* Specific Stat Colors */
+        .stat-total .stat-icon { background: var(--bg-body); color: var(--navy); }
+        .stat-pending .stat-icon { background: var(--saffron-light); color: var(--saffron); }
+        .stat-pending { border-bottom: 4px solid var(--saffron); }
+        .stat-resolved .stat-icon { background: var(--green-light); color: var(--green); }
+        .stat-resolved { border-bottom: 4px solid var(--green); }
+
+        .stat-details h3 { font-size: 2rem; font-family: 'Rajdhani', sans-serif; color: var(--navy); line-height: 1; margin-bottom: 0.25rem; }
+        .stat-details p { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Requests Table Section */
+        .table-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .table-header h2 { font-size: 1.25rem; color: var(--navy); }
+        .btn-new-complaint {
+            background: linear-gradient(135deg, var(--saffron), #e67e22);
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+            transition: var(--transition);
+        }
+        .btn-new-complaint:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255, 153, 51, 0.3); }
+
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 1rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); background: var(--bg-body); font-weight: 600; letter-spacing: 0.05em; }
+        td { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-main); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #fafbfc; }
+
+        .req-id { font-family: monospace; font-weight: 600; color: var(--navy); }
+        .dept-name { font-weight: 600; }
+        .date-text { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Status Badges */
+        .badge { padding: 0.35rem 0.85rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; display: inline-block; text-transform: uppercase; }
+        .badge-pending { background: var(--saffron-light); color: #d97706; border: 1px solid rgba(255, 153, 51, 0.3); }
+        .badge-resolved { background: var(--green-light); color: var(--green); border: 1px solid rgba(19, 136, 8, 0.3); }
+
+        /* Overlay for Mobile Sidebar */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN (MOBILE FOCUS)
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .dashboard-container { padding: 2rem; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+            .stat-card { padding: 1.25rem 1rem; gap: 1rem; }
+            .stat-details h3 { font-size: 1.6rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            
+            /* Sidebar becomes Drawer */
+            .sidebar {
+                position: fixed;
+                top: 0; left: -280px;
+                height: 100vh; width: 280px;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            }
+            .sidebar.active { left: 0; }
+            .sidebar-overlay.active { display: block; }
+            
+            .mobile-header { display: flex; }
+            
+            .dashboard-container { padding: 1.5rem; }
+            .page-header h1 { font-size: 1.8rem; }
+            
+            .stats-grid { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+            .stat-card { padding: 1.5rem; }
+            
+            .table-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .btn-new-complaint { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-icon">G</div>
+            <div class="brand-text">
+                <h2>Garud<span>AI</span></h2>
+            </div>
+        </div>
+        
+        <ul class="nav-menu">
+            <li>
+                <a href="#" class="nav-item active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/report/" class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Lodge Complaint
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    My Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="user-profile">
+            <!-- Django Tag: Get first letter of user's name -->
+            <div class="avatar">{{ user.first_name|default:"C"|make_list|first }}</div>
+            <div class="user-info">
+                <!-- Django Tag: Full Name -->
+                <h4>{{ user.get_full_name|default:"Citizen User" }}</h4>
+                <p>Verified Account ✓</p>
+            </div>
+            <a href="/logout/" class="logout-btn" title="Logout">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div class="brand-icon" style="width:30px;height:30px;font-size:1rem;">G</div>
+                <h2 style="font-family:'Rajdhani'; color:var(--navy);">Garud<span style="color:var(--saffron);">AI</span></h2>
+            </div>
+            <button class="hamburger" id="menuBtn">☰</button>
+        </div>
+
+        <div class="dashboard-container">
+            
+            <header class="page-header">
+                <h1>Welcome Back, {{ user.first_name|default:"Citizen" }}!</h1>
+                <p>Track your civic escalation requests and view official municipal solutions.</p>
+            </header>
+
+            <!-- Statistics Fetched from DB -->
+            <div class="stats-grid">
+                <div class="stat-card stat-total">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <div class="stat-details">
+                        <h3>{{ total_requests|default:"0" }}</h3>
+                        <p>Total Requests Filed</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-pending">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div class="stat-details">
+                        <h3>{{ pending_requests|default:"0" }}</h3>
+                        <p>Under Processing</p>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-resolved">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div class="stat-details">
+                        <h3>{{ resolved_requests|default:"0" }}</h3>
+                        <p>Official Solutions</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Requests Table -->
+            <section class="table-section">
+                <div class="table-header">
+                    <h2>Your Civic Activity Ledger</h2>
+                    <a href="/report/" class="btn-new-complaint">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        New Request
+                    </a>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Department</th>
+                                <th>Date Filed</th>
+                                <th>Location Pin</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Django Loop: For dynamic rendering from backend -->
+                            {% for complaint in user_complaints %}
+                            <tr>
+                                <td class="req-id">#GRD-{{ complaint.id }}</td>
+                                <td class="dept-name">{{ complaint.department }}</td>
+                                <td class="date-text">{{ complaint.date_filed|date:"d M Y" }}</td>
+                                <td>{{ complaint.location_city }}</td>
+                                <td>
+                                    {% if complaint.status == 'Resolved' %}
+                                        <span class="badge badge-resolved">Solution Provided</span>
+                                    {% else %}
+                                        <span class="badge badge-pending">Under Processing</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <!-- Fallback Demo Data if DB is empty -->
+                            <tr>
+                                <td class="req-id">#GRD-8924</td>
+                                <td class="dept-name">Sanitation Department</td>
+                                <td class="date-text">20 Sep 2026</td>
+                                <td>Varanasi (221001)</td>
+                                <td><span class="badge badge-pending">Under Processing</span></td>
+                            </tr>
+                            <tr>
+                                <td class="req-id">#GRD-8810</td>
+                                <td class="dept-name">Electricity Board</td>
+                                <td class="date-text">15 Sep 2026</td>
+                                <td>Sector 4, Main Rd</td>
+                                <td><span class="badge badge-resolved">Solution Provided</span></td>
+                            </tr>
+                            <tr>
+                                <td class="req-id">#GRD-8702</td>
+                                <td class="dept-name">Public Works (Roads)</td>
+                                <td class="date-text">02 Sep 2026</td>
+                                <td>Civil Lines</td>
+                                <td><span class="badge badge-resolved">Solution Provided</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Mobile Sidebar Interaction Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            const toggleMenu = () => {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            };
+
+            menuBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+        });
+    </script>
+</body>
+</html>
